@@ -1,11 +1,11 @@
-# Description: This script creates a vector index of Wikipedia pages
 from llama_index.core import download_loader, VectorStoreIndex, ServiceContext
 from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.core.node_parser import SentenceSplitter
+from llama_index.core.text_splitter import SentenceSplitter
+from llama_index.program.openai import OpenAIPydanticProgram
 import openai
 from pydantic import BaseModel
-from llama_index.program.openai import OpenAIPydanticProgram
 from utils import get_apikey
+
 
 # define the data model in pydantic
 class WikiPageList(BaseModel):
@@ -33,7 +33,6 @@ def wikipage_list(query):
 
 
 def create_wikidocs(wikipage_requests):
-    # REPLACE THIS WITH YOUR CODE
     WikipediaReader = download_loader("WikipediaReader")
     loader = WikipediaReader()
     documents = loader.load_data(pages=wikipage_requests)
@@ -44,11 +43,11 @@ def create_index(query):
     global index
     wikipage_requests = wikipage_list(query)
     documents = create_wikidocs(wikipage_requests)
-    text_splits = SentenceSplitter(chunk_size=150, chunk_overlap=45)
-    #parser = SimpleNodeParser.from_defaults(text_splitter=text_splits)
-    service_context = ServiceContext.from_defaults(node_parser=text_splits)
+    text_splitter = SentenceSplitter(chunk_size=150, chunk_overlap=45)
+    service_context = ServiceContext.from_defaults(text_splitter=text_splitter)
     index = VectorStoreIndex.from_documents(documents, service_context=service_context)
     return index
+
 
 if __name__ == "__main__":
     query = "/get wikipages: paris, lagos, lao"
