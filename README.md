@@ -25,7 +25,7 @@ This bot allows users to query Wikipedia content using natural language, dynamic
 - Wikipedia API
 
 ## How It Works
-
+Run chainlit run chat_agent.py in the terminal. Wait for the script to finish, then refresh the browser on the right. Follow the in-chat instructions to set up the agent.
 1. **Wikipedia Indexing**: The bot dynamically indexes specified Wikipedia pages.
 2. **Vector Search**: LlamaIndex creates a vector store for efficient content retrieval.
 3. **Natural Language Processing**: OpenAI's GPT models process and respond to user queries.
